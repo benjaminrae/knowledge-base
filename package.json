@@ -1,10 +1,11 @@
 {
-  "name": "conejos-mensajeros",
+  "name": "knowledge-base",
   "version": "1.0.0",
   "description": "",
   "main": "",
   "workspaces": [
-    "shared"
+    "shared",
+    "knowledge-server"
   ],
   "scripts": {
     "lint": "npm run lint --workspaces --if-present",
