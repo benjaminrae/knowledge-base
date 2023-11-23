@@ -25,5 +25,8 @@ jobs:
       - name: Install modules
         run: pnpm i --frozen-lockfile
 
+      - name: Build
+        run: pnpm build
+
       - name: Testing
         run: pnpm test
