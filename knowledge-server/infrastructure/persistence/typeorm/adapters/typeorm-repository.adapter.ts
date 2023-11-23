@@ -1,9 +1,13 @@
 import {
   AggregateRoot,
+  Either,
   EventEmitter,
   Logger,
   Mapper,
   Repository,
+  UniqueEntityId,
+  failure,
+  success,
 } from '@knowledge-base/shared';
 import { DataSource } from 'typeorm';
 import { TypeormReadRepositoryAdapter } from './typeorm-read-repository.adapter';
@@ -26,39 +30,43 @@ export abstract class TypeormRepositoryAdapter<
     super(datasource, mapper);
   }
 
-  async create(entity: DomainEntity): Promise<DomainEntity> {
+  async create(entity: DomainEntity): Promise<Either<UniqueEntityId, Error>> {
     const model = this.mapper.toPersistence(entity);
 
-    const [persistedModel] = await this.datasource.query(
-      `INSERT INTO ${this.table} (${Object.keys(model).join(
-        ', ',
-      )}) VALUES (${Object.keys(model)
-        .map((_, index) => `$${index + 1}`)
-        .join(', ')}) RETURNING *`,
-      Object.values(model),
-    );
+    try {
+      const insertResult = await this.createQueryBuilder()
+        .insert()
+        .into(this.table)
+        .values(model)
+        .execute();
+
+      const persistedModel = insertResult.generatedMaps[0];
+
+      entity.publishEvents(this.logger, this.eventEmitter);
+
+      return success(new UniqueEntityId(persistedModel.id));
+    } catch (error) {
+      return failure(error);
+    }
+  }
+
+  async update(entity: DomainEntity): Promise<Either<UniqueEntityId, Error>> {
+    const model = this.mapper.toPersistence(entity);
+
+    const updateResult = await this.createQueryBuilder()
+      .update(this.table)
+      .where('id = :id', { id: entity.id })
+      .set(model)
+      .execute();
+
+    const persistedModel = updateResult.generatedMaps[0];
 
     entity.publishEvents(this.logger, this.eventEmitter);
 
-    return this.mapper.toDomain(persistedModel);
+    return success(new UniqueEntityId(persistedModel.id));
   }
 
-  async update(entity: DomainEntity): Promise<DomainEntity> {
-    const model = this.mapper.toPersistence(entity);
-
-    const persistedModel = await this.datasource.query(
-      `UPDATE ${this.table} SET ${Object.keys(model)
-        .map((key, index) => `${key} = $${index + 1}`)
-        .join(', ')} WHERE id = $${Object.keys(model).length + 1} RETURNING *`,
-      [...Object.values(model), entity.id],
-    );
-
-    entity.publishEvents(this.logger, this.eventEmitter);
-
-    return this.mapper.toDomain(persistedModel);
-  }
-
-  async delete(entity: DomainEntity): Promise<DomainEntity> {
+  async delete(entity: DomainEntity): Promise<Either<UniqueEntityId, Error>> {
     await this.datasource.query(
       `DELETE FROM ${this.table} WHERE id = $1 RETURNING *`,
       [entity.id],
@@ -66,7 +74,7 @@ export abstract class TypeormRepositoryAdapter<
 
     entity.publishEvents(this.logger, this.eventEmitter);
 
-    return entity;
+    return success(new UniqueEntityId(entity.id));
   }
 
   createQueryBuilder() {

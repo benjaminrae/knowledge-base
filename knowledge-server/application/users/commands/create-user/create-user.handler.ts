@@ -26,8 +26,18 @@ export class CreateUserHandler {
         userId: user.id,
       });
 
-      await this.userRepository.create(user);
-      await this.userCredentialsRepository.create(userCredentials);
+      const userResult = await this.userRepository.create(user);
+
+      if (userResult.isFailure()) {
+        return failure(userResult.value);
+      }
+
+      const userCredentialsResult =
+        await this.userCredentialsRepository.create(userCredentials);
+
+      if (userCredentialsResult.isFailure()) {
+        return failure(userCredentialsResult.value);
+      }
 
       return success(user.id);
     } catch (error) {

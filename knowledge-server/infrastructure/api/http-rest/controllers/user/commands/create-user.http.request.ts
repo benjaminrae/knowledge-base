@@ -2,11 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsStrongPassword,
 } from 'class-validator';
 
-export class CreateUserRequestDTO {
+export class CreateUserHttpRequest {
   @ApiProperty({
     example: 'user@email.com',
     description: 'User email address',
@@ -34,6 +35,7 @@ export class CreateUserRequestDTO {
     description: 'User first name',
   })
   @IsString()
+  @IsOptional()
   readonly firstName: string;
 
   @ApiProperty({
@@ -41,5 +43,6 @@ export class CreateUserRequestDTO {
     description: 'User last name',
   })
   @IsString()
+  @IsOptional()
   readonly lastName: string;
 }

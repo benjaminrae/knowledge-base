@@ -1,6 +1,7 @@
 import { CreateUserCommand } from '@app/application/users/commands/create-user/create-user.command';
 import { Either } from '@knowledge-base/shared';
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpStatus,
@@ -9,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateUserRequestDTO } from './create-user.http.request';
+import { CreateUserHttpRequest } from './create-user.http.request';
 
 @Controller()
 export class CreateUserHttpController {
@@ -35,7 +36,7 @@ export class CreateUserHttpController {
   @Post('users')
   async createUser(
     @Body(new ValidationPipe({ transform: true }))
-    createUserRequestDTO: CreateUserRequestDTO,
+    createUserRequestDTO: CreateUserHttpRequest,
   ) {
     const userCommand = new CreateUserCommand({
       email: createUserRequestDTO.email,
@@ -48,7 +49,7 @@ export class CreateUserHttpController {
     >(userCommand);
 
     if (userResult.isFailure()) {
-      throw userResult.value;
+      throw new BadRequestException(userResult.value);
     }
 
     return {
