@@ -1,8 +1,8 @@
 import { User } from '@app/core';
 import { UsersKeys } from '@app/infrastructure/di/users/users.keys';
 import { TypeormRepositoryAdapter } from '@app/infrastructure/persistence/typeorm/adapters/typeorm-repository.adapter';
-import { UserMapper } from '@app/infrastructure/persistence/typeorm/mappers/user.mapper';
-import { UserModel } from '@app/infrastructure/persistence/typeorm/models/user.model';
+import { UserMapper } from '@app/infrastructure/persistence/users/mappers/user.mapper';
+import { UserModel } from '@app/infrastructure/persistence/users/models/user.model';
 import { Repository } from '@knowledge-base/shared';
 import { Inject, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';

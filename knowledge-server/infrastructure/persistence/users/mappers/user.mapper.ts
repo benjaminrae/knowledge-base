@@ -1,5 +1,5 @@
 import { User } from '@app/core';
-import { UserResponse } from '@app/infrastructure/api/http-rest/controllers/user/user.response';
+import { UserResponse } from '@app/infrastructure/api/http-rest/users/responses/user.response';
 import { Mapper, UniqueEntityId } from '@knowledge-base/shared';
 import { Injectable } from '@nestjs/common';
 import { UserModel } from '../models/user.model';

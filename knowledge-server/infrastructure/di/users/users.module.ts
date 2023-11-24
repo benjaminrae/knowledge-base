@@ -1,17 +1,20 @@
 import { BcryptPasswordService } from '@app/application';
-import { CreateUserHttpController } from '@app/infrastructure/api/http-rest/controllers/user/commands/create-user.http.controller';
+import { CreateUserHttpController } from '@app/infrastructure/api/http-rest/users/controllers/commands/create-user.http.controller';
+import { LoginUserHttpController } from '@app/infrastructure/api/http-rest/users/controllers/commands/login-user.http.controller';
 import { NestCreateUserCommandHandler } from '@app/infrastructure/di/users/handlers/nest-create-user-command.handler';
+import { NestLoginUserCommandHandler } from '@app/infrastructure/di/users/handlers/nest-login-user-command.handler';
 import { UsersKeys } from '@app/infrastructure/di/users/users.keys';
-import { UserCredentialsMapper } from '@app/infrastructure/persistence/typeorm/mappers/user-credentials.mapper';
-import { UserMapper } from '@app/infrastructure/persistence/typeorm/mappers/user.mapper';
-import { UserModel } from '@app/infrastructure/persistence/typeorm/models/user.model';
-import { UserCredentialsReadRepository } from '@app/infrastructure/persistence/typeorm/repositories/user-credentials-read.repository';
-import { UserCredentialsRepository } from '@app/infrastructure/persistence/typeorm/repositories/user-credentials.repository';
-import { UserReadRepository } from '@app/infrastructure/persistence/typeorm/repositories/user-read.repository';
-import { UserRepository } from '@app/infrastructure/persistence/typeorm/repositories/user.repository';
+import { UserCredentialsMapper } from '@app/infrastructure/persistence/users/mappers/user-credentials.mapper';
+import { UserMapper } from '@app/infrastructure/persistence/users/mappers/user.mapper';
+import { UserModel } from '@app/infrastructure/persistence/users/models/user.model';
+import { UserCredentialsReadRepository } from '@app/infrastructure/persistence/users/repositories/user-credentials-read.repository';
+import { UserCredentialsRepository } from '@app/infrastructure/persistence/users/repositories/user-credentials.repository';
+import { UserReadRepository } from '@app/infrastructure/persistence/users/repositories/user-read.repository';
+import { UserRepository } from '@app/infrastructure/persistence/users/repositories/user.repository';
 import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '../auth/auth.module';
 
 const repositories: Provider[] = [
   {
@@ -32,7 +35,7 @@ const repositories: Provider[] = [
   },
 ];
 
-const httpControllers = [CreateUserHttpController];
+const httpControllers = [CreateUserHttpController, LoginUserHttpController];
 
 const mappers: Provider[] = [
   {
@@ -52,12 +55,15 @@ const services: Provider[] = [
   },
 ];
 
-const commandHandlers: Provider[] = [NestCreateUserCommandHandler];
+const commandHandlers: Provider[] = [
+  NestCreateUserCommandHandler,
+  NestLoginUserCommandHandler,
+];
 
 const queryHandlers: Provider[] = [];
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserModel]), CqrsModule],
+  imports: [TypeOrmModule.forFeature([UserModel]), CqrsModule, AuthModule],
   controllers: [...httpControllers],
   providers: [
     Logger,
