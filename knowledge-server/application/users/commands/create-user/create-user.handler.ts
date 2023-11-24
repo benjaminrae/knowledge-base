@@ -3,8 +3,6 @@ import { Either, Repository, failure, success } from '@knowledge-base/shared';
 import { CreateUserCommand } from './create-user.command';
 
 export class CreateUserHandler {
-  userWriteRepository: any;
-  userCredentialsWriteRepository: any;
   constructor(
     private readonly userRepository: Repository<User>,
     private readonly userCredentialsRepository: Repository<UserCredentials>,
