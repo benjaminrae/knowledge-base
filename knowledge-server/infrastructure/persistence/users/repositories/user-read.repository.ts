@@ -1,15 +1,11 @@
+import { UserReadRepositoryPort } from '@app/application';
 import { User } from '@app/core';
 import { UsersKeys } from '@app/infrastructure/di/users/users.keys';
 import { TypeormReadRepositoryAdapter } from '@app/infrastructure/persistence/typeorm/adapters/typeorm-read-repository.adapter';
-import { UserMapper } from '@app/infrastructure/persistence/typeorm/mappers/user.mapper';
-import { UserModel } from '@app/infrastructure/persistence/typeorm/models/user.model';
-import { ReadRepository } from '@knowledge-base/shared';
+import { UserMapper } from '@app/infrastructure/persistence/users/mappers/user.mapper';
+import { UserModel } from '@app/infrastructure/persistence/users/models/user.model';
 import { Inject } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-
-export interface UserReadRepositoryPort extends ReadRepository<User> {
-  findByEmail(email: string): Promise<User | undefined>;
-}
 
 export class UserReadRepository
   extends TypeormReadRepositoryAdapter<User, UserModel>

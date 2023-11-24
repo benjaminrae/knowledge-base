@@ -26,4 +26,10 @@ export class UserModel {
     nullable: true,
   })
   last_name: string;
+
+  @Column('date', { nullable: true })
+  first_login: Date;
+
+  @Column('date', { nullable: true })
+  last_login: Date;
 }

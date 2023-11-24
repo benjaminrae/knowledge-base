@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateUserHttpRequest } from './create-user.http.request';
+import { CreateUserHttpRequest } from '../../requests/create-user.http.request';
 
 @Controller()
 export class CreateUserHttpController {
@@ -41,6 +41,8 @@ export class CreateUserHttpController {
     const userCommand = new CreateUserCommand({
       email: createUserRequestDTO.email,
       password: createUserRequestDTO.password,
+      firstName: createUserRequestDTO.firstName,
+      lastName: createUserRequestDTO.lastName,
     });
 
     const userResult = await this.commandBus.execute<

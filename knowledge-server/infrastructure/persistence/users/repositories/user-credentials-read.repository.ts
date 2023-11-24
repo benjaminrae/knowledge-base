@@ -1,16 +1,11 @@
+import { UserCredentialsReadRepositoryPort } from '@app/application';
 import { UserCredentials } from '@app/core';
 import { UsersKeys } from '@app/infrastructure/di/users/users.keys';
 import { TypeormReadRepositoryAdapter } from '@app/infrastructure/persistence/typeorm/adapters/typeorm-read-repository.adapter';
-import { UserCredentialsMapper } from '@app/infrastructure/persistence/typeorm/mappers/user-credentials.mapper';
-import { UserCredentialsModel } from '@app/infrastructure/persistence/typeorm/models/user-credentials.model';
-import { ReadRepository } from '@knowledge-base/shared';
+import { UserCredentialsMapper } from '@app/infrastructure/persistence/users/mappers/user-credentials.mapper';
+import { UserCredentialsModel } from '@app/infrastructure/persistence/users/models/user-credentials.model';
 import { Inject } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-
-export interface UserCredentialsReadRepositoryPort
-  extends ReadRepository<UserCredentials> {
-  findByUserId(userId: string): Promise<UserCredentials | undefined>;
-}
 
 export class UserCredentialsReadRepository
   extends TypeormReadRepositoryAdapter<UserCredentials, UserCredentialsModel>

@@ -2,6 +2,8 @@ export type UserProps = {
   email: string;
   firstName?: string;
   lastName?: string;
+  firstLogin?: Date;
+  lastLogin?: Date;
 };
 
 export type CreateUserProps = {
@@ -25,4 +27,9 @@ export type UserCredentialsProps = {
 export type CreateUserCredentialsProps = {
   password: string;
   userId: string;
+};
+
+export type LoginUserCommandProps = {
+  email: string;
+  password: string;
 };

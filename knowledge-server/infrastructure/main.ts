@@ -4,6 +4,7 @@ import { InfrastructureModule } from '@app/infrastructure/infrastructure.module'
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(InfrastructureModule);
@@ -17,6 +18,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ErrorsInterceptor());
 
   app.enableShutdownHooks();
+
+  app.use(cookieParser());
 
   app.enableCors();
 
