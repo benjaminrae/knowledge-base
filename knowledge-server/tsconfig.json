@@ -18,10 +18,14 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/core": ["core/src"],
-      "@app/core/*": ["core/src/*"],
-      "@app/application": ["application/src"],
-      "@app/application/*": ["application/src/*"]
+      "@app/core": ["core/"],
+      "@app/core/*": ["core/*"],
+      "@app/application": ["application/"],
+      "@app/application/*": ["application/*"],
+      "@app/configs": ["configs"],
+      "@app/configs/*": ["configs/*"],
+      "@app/infrastructure": ["infrastructure"],
+      "@app/infrastructure/*": ["infrastructure/*"]
     }
   }
 }

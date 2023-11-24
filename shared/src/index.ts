@@ -1,5 +1,6 @@
 export * from './aggregate-root';
 export * from './command';
+export * from './domain-error';
 export * from './domain-event';
 export * from './either';
 export * from './entity';
@@ -11,8 +12,8 @@ export * from './mapper';
 export * from './paginated';
 export * from './query';
 export * from './read-repository';
+export * from './repository';
 export * from './result';
 export * from './success';
 export * from './unique-entity-id';
 export * from './value-object';
-export * from './write-repository';

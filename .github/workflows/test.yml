@@ -17,13 +17,26 @@ jobs:
           version: 7
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 18
           cache: "pnpm"
 
       - name: Install modules
         run: pnpm i --frozen-lockfile
 
+      - name: Build
+        run: pnpm build
+
       - name: Testing
         run: pnpm test
+        env:
+          NODE_ENV: "test"
+          PG_HOST: ${{ secrets.PG_HOST }}
+          PG_PORT: ${{ secrets.PG_PORT }}
+          PG_USER: ${{ secrets.PG_USER }}
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          PG_DATABASE: ${{ secrets.PG_DATABASE }}
+          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PORT: ${{ secrets.PORT }}
