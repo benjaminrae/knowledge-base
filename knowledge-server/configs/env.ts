@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as dotenv from 'dotenv';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import z from 'zod';
 
-dotenv.config();
+const envPath = resolve(__dirname, '../../.env');
+if (existsSync(envPath)) {
+  dotenv.config({ path: envPath, debug: true });
+} else {
+  dotenv.config({ debug: true });
+}
 
 const environment = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']),

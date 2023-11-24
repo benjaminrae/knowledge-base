@@ -4,6 +4,7 @@ on: push
 
 jobs:
   test:
+    environment: env
     name: Tests passes
     runs-on: ubuntu-latest
 
@@ -32,11 +33,11 @@ jobs:
         run: pnpm test
         env:
           NODE_ENV: "test"
-          PG_HOST: ${{ secrets.PG_HOST }}
-          PG_PORT: ${{ secrets.PG_PORT }}
-          PG_USER: ${{ secrets.PG_USER }}
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-          PG_DATABASE: ${{ secrets.PG_DATABASE }}
-          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          PORT: ${{ secrets.PORT }}
+          PG_HOST: ${{ vars.PG_HOST }}
+          PG_PORT: ${{ vars.PG_PORT }}
+          PG_USER: ${{ vars.PG_USER }}
+          PG_PASSWORD: ${{ vars.PG_PASSWORD }}
+          PG_DATABASE: ${{ vars.PG_DATABASE }}
+          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+          JWT_SECRET: ${{ vars.JWT_SECRET }}
+          PORT: ${{ vars.PORT }}
